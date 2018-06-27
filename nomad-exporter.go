@@ -339,6 +339,7 @@ func main() {
 		metricsPath   = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 		nomadServer   = flag.String("nomad.server", "http://localhost:4646", "HTTP API address of a Nomad server or agent.")
 		nomadTimeout  = flag.String("nomad.timeout", "30", "HTTP timeout to contact Nomad agent.")
+		nomadSecretId = flag.String("nomad.secret-id", "", "Secret ID (nomad token) for Nomad client when ACL enabled")
 		tlsCaFile     = flag.String("tls.ca-file", "", "ca-file path to a PEM-encoded CA cert file to use to verify the connection to nomad server")
 		tlsCaPath     = flag.String("tls.ca-path", "", "ca-path is the path to a directory of PEM-encoded CA cert files to verify the connection to nomad server")
 		tlsCert       = flag.String("tls.cert-file", "", "cert-file is the path to the client certificate for Nomad communication")
@@ -354,6 +355,10 @@ func main() {
 	}
 	cfg := api.DefaultConfig()
 	cfg.Address = *nomadServer
+	
+	if *nomadSecretId != "" {
+		cfg.SecretID = *nomadSecretId
+	}
 
 	if strings.HasPrefix(cfg.Address, "https://") {
 		cfg.TLSConfig.CACert = *tlsCaFile
