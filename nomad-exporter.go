@@ -1,4 +1,4 @@
-package main // import "github.com/Nomon/nomad-exporter"
+package main
 
 import (
 	"flag"
